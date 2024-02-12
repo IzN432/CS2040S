@@ -1,8 +1,5 @@
-import com.sun.source.tree.Tree;
 
 import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
 
 /**
  * ScapeGoat Tree class

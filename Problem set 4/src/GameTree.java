@@ -205,10 +205,10 @@ public class GameTree {
 
     // Simple main for testing purposes
     public static void main(String[] args) {
-        String[] fileNames = new String[] {"custom_arbitrary.txt"};
+        String[] fileNames = new String[] {"arbitrary.txt", "misere.txt", "notie.txt"};
         for (String name : fileNames) {
             GameTree tree = new GameTree();
-            tree.customReadTree("variants/" + name);
+            tree.readTree("variants/" + name);
             System.out.println(tree.findValue());
         }
     }
