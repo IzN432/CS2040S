@@ -145,8 +145,8 @@ public class RunAttempt implements ITreasureExtractor {
         }
         */
 
-        runAttemptTests(rng.nextInt(2000 + 100), rng.nextInt(100), 10000);
-        runCostTests(1024, 17, 1000);
+        // runAttemptTests(1024, 17, 100000);
+        runCostTests(1024, 17, 10000);
     }
     public static double log(BigInteger val) {
         // https://stackoverflow.com/questions/739532/logarithm-of-a-bigdecimal

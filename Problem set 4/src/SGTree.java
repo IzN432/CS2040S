@@ -107,8 +107,46 @@ public class SGTree {
      * @param nodeList ordered array of nodes
      * @return the new root node
      */
+//    public TreeNode buildTree(TreeNode[] nodeList) {
+//        return buildTreeHelper(nodeList, 0, nodeList.length - 1);
+//    }
     public TreeNode buildTree(TreeNode[] nodeList) {
-        return buildTreeHelper(nodeList, 0, nodeList.length - 1);
+        System.out.println(Arrays.toString(nodeList));
+        if (nodeList.length == 0) {
+            return null;
+        }
+        if (nodeList.length == 1) {
+            TreeNode root = nodeList[0];
+            System.out.println(root);
+            root.left = null;
+            root.right = null;
+            return root;
+        }
+        int mid = nodeList.length / 2;
+        TreeNode root = nodeList[mid];
+        System.out.println(root);
+
+        if (mid >= 1) {
+            TreeNode[] leftTree = new TreeNode[mid];
+            for (int i = 0; i < mid; i++) {
+                leftTree[i] = nodeList[i];
+            }
+            root.left = buildTree(leftTree);
+        } else {
+            root.left = null;
+        }
+
+        if (mid < nodeList.length - 1) {
+            TreeNode[] rightTree = new TreeNode[nodeList.length - mid - 1];
+            for (int i = 0; i < rightTree.length; i++) {
+                rightTree[i] = nodeList[i + mid + 1];
+            }
+            root.right = buildTree(rightTree);
+        } else {
+            root.right = null;
+        }
+
+        return root;
     }
 
     private TreeNode buildTreeHelper(TreeNode[] nodeList, int start, int end) {
@@ -121,6 +159,20 @@ public class SGTree {
         nodeList[mid].right = buildTreeHelper(nodeList, mid + 1, end);
 
         return nodeList[mid];
+    }
+
+    private void printTraversal(TreeNode n) {
+        if (n == null) return;
+        String left;
+        String right;
+        if (n.left == null) left = "null";
+        else left = n.left.toString();
+        if (n.right == null) right = "null";
+        else right = n.right.toString();
+
+        System.out.printf("%s, Left: %s, Right: %s\n", n.key, left, right);
+        printTraversal(n.left);
+        printTraversal(n.right);
     }
 
     /**
@@ -183,6 +235,7 @@ public class SGTree {
         }
 
         tree.rebuild(tree.root, Child.RIGHT);
+        tree.printTraversal(tree.root);
     }
 
     @Override
