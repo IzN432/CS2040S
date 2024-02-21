@@ -1,6 +1,7 @@
 public class Solution {
     // TODO: Include your data structures here
 
+<<<<<<< HEAD
     private static class Node implements Comparable<Node> {
         private long energy;
         private long value;
@@ -29,12 +30,15 @@ public class Solution {
         }
     }
     private Node root;
+=======
+>>>>>>> ee8bda445685cc3ae73061c50416204f706fc60e
     public Solution() {
         // TODO: Construct/Initialise your data structures here
     }
 
     void add(long energy, long value) {
         // TODO: Implement your insertion operation here
+<<<<<<< HEAD
         Node nodeToAdd = new Node(energy, value);
         nodeToAdd.height = 0;
         if (root == null) {
@@ -191,4 +195,14 @@ public class Solution {
         sol.printTree();
         System.out.println(sol.query(15));
     }
+=======
+    }
+
+    long query(long remainingEnergy) {
+        // TODO: Implement your query operation here
+
+        return 0L;
+    }
+
+>>>>>>> ee8bda445685cc3ae73061c50416204f706fc60e
 }
