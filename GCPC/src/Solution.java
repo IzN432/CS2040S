@@ -1,4 +1,7 @@
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Arrays;
+import java.util.Scanner;
 
 public class Solution {
     // TODO: Include your data structures here
@@ -8,7 +11,7 @@ public class Solution {
         private long score;
         private long penalty;
 
-        public Team(int teamID, int score, int penalty) {
+        public Team(int teamID, long score, long penalty) {
             this.teamID = teamID;
             this.score = score;
             this.penalty = penalty;
@@ -61,7 +64,7 @@ public class Solution {
         } else if (comparison < 0) {
             return getRankHelper(team, n.left);
         } else {
-            return getWeight(n.left) + 1 + getRankHelper(team, n.right);
+            return getWeight(n.left) + n.numTeams + getRankHelper(team, n.right);
         }
     }
 
@@ -132,10 +135,10 @@ public class Solution {
     private Node insertTeamHelper(Team team, Node n) {
         if (n == null) {
             Node newNode = new Node();
-            newNode.height = -1;
+            newNode.height = 0;
             newNode.weight = 1;
             newNode.numTeams = 1;
-            newNode.value = team;
+            newNode.value = new Team(team.teamID, team.score, team.penalty);
 
             return newNode;
         }
@@ -150,14 +153,14 @@ public class Solution {
             n.left = res;
 
             n.height = Math.max(getHeight(res), getHeight(n.right)) + 1;
-            n.weight = getWeight(res) + getWeight(n.right) + 1;
+            n.weight = getWeight(res) + getWeight(n.right) + n.numTeams;
         } else {
             // search right
             Node res = insertTeamHelper(team, n.right);
             n.right = res;
 
             n.height = Math.max(getHeight(res), getHeight(n.left)) + 1;
-            n.weight = getWeight(res) + getWeight(n.left) + 1;
+            n.weight = getWeight(res) + getWeight(n.left) + n.numTeams;
         }
 
         // rotate it to balance
@@ -203,10 +206,10 @@ public class Solution {
         }
 
         n.height = Math.max(getHeight(n.left), getHeight(n.right)) + 1;
-        n.weight = getWeight(n.left) + getWeight(n.right) + 1;
+        n.weight = getWeight(n.left) + getWeight(n.right) + n.numTeams;
 
         temp.height = Math.max(getHeight(temp.left), getHeight(temp.right)) + 1;
-        temp.weight = getWeight(temp.left) + getWeight(temp.right) + 1;
+        temp.weight = getWeight(temp.left) + getWeight(temp.right) + temp.numTeams;
 
         return temp;
     }
@@ -251,7 +254,7 @@ public class Solution {
 
                 n.left = deleteNodeHelper(team, n.left);
                 n.height = Math.max(getHeight(n.left), getHeight(n.right)) + 1;
-                n.weight = getWeight(n.left) + getWeight(n.right) + 1;
+                n.weight = getWeight(n.left) + getWeight(n.right) + n.numTeams;
 
                 return n;
             } else {
@@ -266,7 +269,7 @@ public class Solution {
             n.left = res;
 
             n.height = Math.max(getHeight(res), getHeight(n.right)) + 1;
-            n.weight = getWeight(res) + getWeight(n.right) + 1;
+            n.weight = getWeight(res) + getWeight(n.right) + n.numTeams;
 
         } else {
             // search right
@@ -274,11 +277,11 @@ public class Solution {
             n.right = res;
 
             n.height = Math.max(getHeight(res), getHeight(n.left)) + 1;
-            n.weight = getWeight(res) + getWeight(n.left) + 1;
+            n.weight = getWeight(res) + getWeight(n.left) + n.numTeams;
         }
 
         if (getNotBalanced(n)) {
-            balance(n);
+            return balance(n);
         }
 
         return n;
@@ -298,11 +301,11 @@ public class Solution {
     }
 
     public int update(int team, long newPenalty){
-        System.out.println("TEAM: " + team);
         Team teamToUpdate = teams[team - 1];
 
         // delete the node
         deleteNode(teamToUpdate);
+        // printTree();
 
         // update the team values
         teamToUpdate.increaseScore(1);
@@ -311,7 +314,7 @@ public class Solution {
         // insert back the node
         insertTeam(teamToUpdate);
 
-        printTree();
+        // printTree();
         // find and return the rank of team 1
         return getRank(teams[0]);
     }
