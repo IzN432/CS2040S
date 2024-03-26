@@ -48,29 +48,9 @@ public class MazeSolver implements IMazeSolver {
 
 		}
 	}
-	private static class Pair<T, U> {
-		public T first;
-		public U second;
-		public Pair(T first, U second) {
-			this.first = first;
-			this.second = second;
-		}
+	private record RoomValue(Room room, int row, int col) {
+	}
 
-	}
-	private static class RoomValue extends Pair<Room, Pair<Integer, Integer>> {
-		public RoomValue(Room room, int row, int col) {
-			super(room, new Pair<>(row, col));
-		}
-		public int getRow() {
-			return super.second.first;
-		}
-		public int getCol() {
-			return super.second.second;
-		}
-		public Room getRoom() {
-			return super.first;
-		}
-	}
 	private static final int NORTH = 0, SOUTH = 1, EAST = 2, WEST = 3;
 	private static final int[][] DELTAS = new int[][] {
 		{ -1, 0 }, // North
@@ -111,7 +91,7 @@ public class MazeSolver implements IMazeSolver {
 		if (shortestPath != null) {
 			PairList<RoomValue> temp = shortestPath;
 			while (temp.isNotEmpty()) {
-				temp.get().getRoom().onPath = false;
+				temp.get().room().onPath = false;
 				temp = temp.tail();
 			}
 		}
@@ -132,8 +112,8 @@ public class MazeSolver implements IMazeSolver {
             while (!roomQueue.isEmpty()) {
                 PairList<RoomValue> current = roomQueue.remove();
                 RoomValue latestValue = current.get();
-                int currRow = latestValue.getRow();
-                int currCol = latestValue.getCol();
+                int currRow = latestValue.row();
+                int currCol = latestValue.col();
 
 				if (roomDistances[currRow][currCol] != INF) {
 					continue;
@@ -146,17 +126,17 @@ public class MazeSolver implements IMazeSolver {
 					shortestPath = current;
 					PairList<RoomValue> temp = current;
 					while (temp.isNotEmpty()) {
-						temp.get().getRoom().onPath = true;
+						temp.get().room().onPath = true;
 						temp = temp.tail();
 					}
 				}
 
-                Room latestRoom = latestValue.getRoom();
+                Room latestRoom = latestValue.room();
 
 				for (int direction = 0; direction < 4; direction++) {
 					if (!hasWallInDirection(direction, latestRoom)) {
-						int row = latestValue.getRow() + DELTAS[direction][0];
-						int col = latestValue.getCol() + DELTAS[direction][1];
+						int row = latestValue.row() + DELTAS[direction][0];
+						int col = latestValue.col() + DELTAS[direction][1];
 						holding.add(current.append(new RoomValue(maze.getRoom(row, col), row, col)));
 					}
 				}
@@ -176,7 +156,7 @@ public class MazeSolver implements IMazeSolver {
 	@Override
 	public Integer numReachable(int k) throws Exception {
 		if (maze == null) throw new Exception();
-		return reachableRooms.getOrDefault(k, 0);
+		return reachableRooms.get(k);
 	}
 
 	public static void main(String[] args) {
