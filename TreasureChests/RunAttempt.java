@@ -130,8 +130,8 @@ public class RunAttempt implements ITreasureExtractor {
         // TODO: Feel free to change the test case here.
         //  bitmap is an array of n keys where 1 means that the key is correct (corresponds to one of the locks)
 
-        // runAttemptTests(1024, 9, 100);
-        // runCostTests(10, 9, 100);
+        // runAttemptTests(1024, 17, 100);
+        // runCostTests(1024, 17, 1);
 
         /*
         for (int i = 0; i < 1024; i++) {
@@ -146,7 +146,6 @@ public class RunAttempt implements ITreasureExtractor {
         */
 
         // runAttemptTests(1024, 17, 100000);
-        runCostTests(1024, 17, 10000);
     }
     public static double log(BigInteger val) {
         // https://stackoverflow.com/questions/739532/logarithm-of-a-bigdecimal
